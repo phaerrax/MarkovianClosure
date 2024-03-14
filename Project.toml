@@ -1,0 +1,13 @@
+name = "MarkovianClosure"
+uuid = "f4258524-7353-4a9f-9916-8287adc6b2b5"
+authors = ["Davide Ferracin <davide.ferracin@protonmail.com> and contributors"]
+version = "0.0.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
