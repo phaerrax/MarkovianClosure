@@ -1,7 +1,11 @@
 name = "MarkovianClosure"
 uuid = "f4258524-7353-4a9f-9916-8287adc6b2b5"
 authors = ["Davide Ferracin <davide.ferracin@protonmail.com> and contributors"]
-version = "0.0.0"
+version = "0.1.0"
+
+[deps]
+ITensors = "9136182c-28ba-11e9-034c-db9fb085ebd5"
+LindbladVectorizedTensors = "6455c26f-8985-4381-925b-8a93509e9dbd"
 
 [compat]
 julia = "1"

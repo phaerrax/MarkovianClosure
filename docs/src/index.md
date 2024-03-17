@@ -8,7 +8,3 @@ Documentation for [MarkovianClosure](https://github.com/phaerrax/MarkovianClosur
 
 ```@index
 ```
-
-```@autodocs
-Modules = [MarkovianClosure]
-```

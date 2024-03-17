@@ -1,10 +1,14 @@
-using MarkovianClosure
 using Documenter
+using ITensors
+using MarkovianClosure
 
-DocMeta.setdocmeta!(MarkovianClosure, :DocTestSetup, :(using MarkovianClosure); recursive=true)
+DocMeta.setdocmeta!(
+    MarkovianClosure, :DocTestSetup, :(using MarkovianClosure); recursive=true
+)
 
 makedocs(;
     modules=[MarkovianClosure],
+    checkdocs=:exported,
     authors="Davide Ferracin <davide.ferracin@protonmail.com> and contributors",
     sitename="MarkovianClosure.jl",
     format=Documenter.HTML(;
@@ -12,12 +16,9 @@ makedocs(;
         edit_link="main",
         assets=String[],
     ),
-    pages=[
-        "Home" => "index.md",
-    ],
+    pages=["Home" => "index.md"],
 )
 
 deploydocs(;
-    repo="github.com/phaerrax/MarkovianClosure.jl",
-    devbranch="main",
+    branch="gh-pages", repo="github.com/phaerrax/MarkovianClosure.jl", devbranch="main"
 )
