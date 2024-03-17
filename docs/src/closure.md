@@ -1,6 +1,7 @@
-## Markovian closure operators
+# Markovian closure operators
 
-### Constructors
+## Constructors
+
 ```@docs
 SemicircleMarkovianClosure
 ```
@@ -9,7 +10,8 @@ SemicircleMarkovianClosure
 markovianclosure_parameters
 ```
 
-### Properties and parameters of a Markovian closure object
+## Properties and parameters
+
 ```@docs
 length(mc::SemicircleMarkovianClosure)
 freqs(mc::SemicircleMarkovianClosure)
@@ -22,13 +24,11 @@ outercoup(mc::SemicircleMarkovianClosure, j::Int)
 damp(mc::SemicircleMarkovianClosure, j::Int)
 ```
 
-### ITensor operators
+## ITensor operators
 
 ```@docs
 markovianclosure(mc::SemicircleMarkovianClosure, sites::Vector{<:Index}, chain_edge_site::Int)
-markovianclosure_adjoint(
-    mc::SemicircleMarkovianClosure, sites::Vector{<:Index}, chain_edge_site::Int, gradefactor::Int
-)
+markovianclosure_adjoint(mc::SemicircleMarkovianClosure, sites::Vector{<:Index}, chain_edge_site::Int, gradefactor::Int)
 markovianclosure′
 filled_markovianclosure
 filled_markovianclosure_adjoint

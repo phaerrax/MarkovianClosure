@@ -6,5 +6,5 @@ CurrentModule = MarkovianClosure
 
 Documentation for [MarkovianClosure](https://github.com/phaerrax/MarkovianClosure.jl).
 
-```@index
+```@contents
 ```
