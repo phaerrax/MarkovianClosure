@@ -672,7 +672,7 @@ function filled_markovianclosure_adjoint(
     chain_edge_site::Int,
     gradefactor::Int,
 )
-    ℓ = adjoint_spin_chain(st, freqs(mc), innercoups(mc), sitenumbers)
+    ℓ = spin_chain_adjoint(st, freqs(mc), innercoups(mc), sitenumbers)
 
     for (j, site) in enumerate(sitenumbers)
         jws = jwstring(; start=chain_edge_site, stop=site)
@@ -704,7 +704,7 @@ function filled_markovianclosure_adjoint(
     chain_edge_site::Int,
     gradefactor::Int,
 )
-    ℓ = adjoint_spin_chain(st, freqs(mc), innercoups(mc), sitenumbers)
+    ℓ = spin_chain_adjoint(st, freqs(mc), innercoups(mc), sitenumbers)
 
     for (j, site) in enumerate(sitenumbers)
         ℓ += -(
@@ -731,7 +731,7 @@ function filled_markovianclosure_adjoint(
     chain_edge_site::Int,
     gradefactor::Int,
 )
-    ℓ = adjoint_spin_chain(st, freqs(mc), innercoups(mc), sitenumbers)
+    ℓ = spin_chain_adjoint(st, freqs(mc), innercoups(mc), sitenumbers)
 
     for (j, site) in enumerate(sitenumbers)
         jws = jwstring(; start=chain_edge_site, stop=site)
