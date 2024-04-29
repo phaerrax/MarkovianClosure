@@ -139,11 +139,18 @@ damp(mc::SemicircleMarkovianClosure, j::Int) = mc.damping[j]
 
 ############################################################################################
 
-markovianclosure(::SiteType, ::SemicircleMarkovianClosure, ::Vector{<:Int}, ::Int) = nothing
+function markovianclosure(
+    ::SiteType, ::SemicircleMarkovianClosure, ::Vector{<:Int}, ::Int::Int
+)
+    return nothing
+end
 
 """
     markovianclosure(
-        mc::SemicircleMarkovianClosure, sites::Vector{<:Index}, chain_edge_site::Int
+        mc::SemicircleMarkovianClosure,
+        sites::Vector{<:Index},
+        chain_edge_site::Int,
+        gradefactor::Int=1,
     )
 
 Return an OpSum object encoding the Markovian closure operators with parameters given by
@@ -151,7 +158,10 @@ Return an OpSum object encoding the Markovian closure operators with parameters 
 `chain_edge_site`. This closure replaces a chain starting from an empty state.
 """
 function markovianclosure(
-    mc::SemicircleMarkovianClosure, sites::Vector{<:Index}, chain_edge_site::Int
+    mc::SemicircleMarkovianClosure,
+    sites::Vector{<:Index},
+    chain_edge_site::Int,
+    gradefactor::Int=1,
 )
     @assert length(mc) == length(sites)
     stypes = ITensors._sitetypes(first(sites))
@@ -159,7 +169,7 @@ function markovianclosure(
         # Check if all sites have this type (otherwise skip this tag).
         if all(i -> st in ITensors._sitetypes(i), sites)
             # If the type is shared, then try calling the function with it.
-            ℓ = markovianclosure(st, mc, sitenumber.(sites), chain_edge_site)
+            ℓ = markovianclosure(st, mc, sitenumber.(sites), chain_edge_site, gradefactor)
             # If the result is something, return that result.
             if !isnothing(ℓ)
                 return ℓ
@@ -181,6 +191,7 @@ function markovianclosure(
     mc::SemicircleMarkovianClosure,
     sitenumbers::Vector{<:Int},
     chain_edge_site::Int,
+    gradefactor::Int=1,
 )
     ℓ = spin_chain(st, freqs(mc), innercoups(mc), sitenumbers)
 
@@ -196,7 +207,9 @@ function markovianclosure(
     for (j, site) in enumerate(sitenumbers)
         # a ρ a†
         opstring = [repeat(["F⋅ * ⋅F"], site - 1); "A⋅ * ⋅A†"]
-        ℓ += (damp(mc, j), collect(Iterators.flatten(zip(opstring, 1:site)))...)
+        ℓ += (
+            gradefactor * damp(mc, j), collect(Iterators.flatten(zip(opstring, 1:site)))...
+        )
         # -0.5 (a† a ρ + ρ a† a)
         ℓ += -0.5damp(mc, j), "N⋅", site
         ℓ += -0.5damp(mc, j), "⋅N", site
@@ -209,6 +222,7 @@ function markovianclosure(
     mc::SemicircleMarkovianClosure,
     sitenumbers::Vector{<:Int},
     chain_edge_site::Int,
+    gradefactor::Int=1,
 )
     ℓ = spin_chain(st, freqs(mc), innercoups(mc), sitenumbers)
 
@@ -221,7 +235,7 @@ function markovianclosure(
 
     for (j, site) in enumerate(sitenumbers)
         # a ρ a†
-        ℓ += damp(mc, j), "σ-⋅ * ⋅σ+", site
+        ℓ += gradefactor * damp(mc, j), "σ-⋅ * ⋅σ+", site
         # -0.5 (a† a ρ + ρ a† a)
         ℓ += -0.5damp(mc, j), "N⋅", site
         ℓ += -0.5damp(mc, j), "⋅N", site
@@ -234,6 +248,7 @@ function markovianclosure(
     mc::SemicircleMarkovianClosure,
     sitenumbers::Vector{<:Int},
     chain_edge_site::Int,
+    gradefactor::Int=1,
 )
     ℓ = spin_chain(st, freqs(mc), innercoups(mc), sitenumbers)
 
@@ -269,10 +284,14 @@ function markovianclosure(
         # • {a↓ₖ, a↓ₖ†} = {a↑ₖ, a↑ₖ†} = 1;
         # • Fₖ anticommutes with a↓ₖ, a↓ₖ†, a↑ₖ and a↑ₖ†.
         opstring = [repeat(["F⋅ * ⋅F"], site - 1); "Aup⋅ * ⋅Aup†"]
-        ℓ += (damp(mc, j), collect(Iterators.flatten(zip(opstring, 1:site)))...)
+        ℓ += (
+            gradefactor * damp(mc, j), collect(Iterators.flatten(zip(opstring, 1:site)))...
+        )
         # c↓ₖ ρ c↓ₖ† = F₁ ⋯ Fₖ₋₁ Fₖa↓ₖ ρ a↓ₖ†Fₖ Fₖ₋₁ ⋯ F₁
         opstring = [repeat(["F⋅ * ⋅F"], site - 1); "FAdn⋅ * ⋅Adn†F"]
-        ℓ += (damp(mc, j), collect(Iterators.flatten(zip(opstring, 1:site)))...)
+        ℓ += (
+            gradefactor * damp(mc, j), collect(Iterators.flatten(zip(opstring, 1:site)))...
+        )
 
         # -½ (c↑ₖ† c↑ₖ ρ + ρ c↑ₖ† c↑ₖ) = -½ (a↑ₖ† a↑ₖ ρ + ρ a↑ₖ† a↑ₖ)
         ℓ += -0.5damp(mc, j), "Nup⋅", site
@@ -468,7 +487,9 @@ function filled_markovianclosure(
 end
 
 """
-    filled_markovianclosure(mc::SemicircleMarkovianClosure, sites::Vector{<:Index}, chain_edge_site::Int)
+    filled_markovianclosure(
+        mc::SemicircleMarkovianClosure, sites::Vector{<:Index}, chain_edge_site::Int
+    )
 
 Return an OpSum object encoding the Markovian closure operators with parameters given by
 `mc`, on sites `sites`, linked to the main TEDOPA/thermofield chain on site
@@ -625,7 +646,10 @@ end
 
 """
     filled_markovianclosure_adjoint(
-        mc::SemicircleMarkovianClosure, sites::Vector{<:Index}, chain_edge_site::Int, gradefactor::Int
+        mc::SemicircleMarkovianClosure,
+        sites::Vector{<:Index},
+        chain_edge_site::Int,
+        gradefactor::Int,
     )
 
 Return an OpSum object encoding the Markovian closure operators with parameters given by
