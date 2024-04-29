@@ -140,7 +140,7 @@ damp(mc::SemicircleMarkovianClosure, j::Int) = mc.damping[j]
 ############################################################################################
 
 function markovianclosure(
-    ::SiteType, ::SemicircleMarkovianClosure, ::Vector{<:Int}, ::Int::Int
+    ::SiteType, ::SemicircleMarkovianClosure, ::Vector{<:Int}, ::Int, ::Int
 )
     return nothing
 end
