@@ -3,6 +3,8 @@ module MarkovianClosure
 using ITensors
 using LindbladVectorizedTensors
 
-include("closure.jl")
+include("SemicircleMarkovianClosure.jl")
+include("markovianclosure.jl")
+include("markovianclosure_adjoint.jl")
 
 end
