@@ -249,7 +249,7 @@ function filled_markovianclosure(
     mc::SemicircleMarkovianClosure,
     sitenumbers::Vector{<:Int},
     chain_edge_site::Int,
-    gradefactor::Int,
+    gradefactor::Int=1,
 )
     ℓ = spin_chain(st, freqs(mc), innercoups(mc), sitenumbers)
 
@@ -276,7 +276,7 @@ function filled_markovianclosure(
     mc::SemicircleMarkovianClosure,
     sitenumbers::Vector{<:Int},
     chain_edge_site::Int,
-    gradefactor::Int,
+    gradefactor::Int=1,
 )
     ℓ = spin_chain(st, freqs(mc), innercoups(mc), sitenumbers)
 
