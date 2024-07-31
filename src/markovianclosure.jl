@@ -1,5 +1,7 @@
 export markovianclosure, filled_markovianclosure
 
+using ITensors.SiteTypes: _sitetypes, commontags
+
 function markovianclosure(
     ::SiteType, ::SemicircleMarkovianClosure, ::Vector{<:Int}, ::Int, ::Int
 )
@@ -25,17 +27,12 @@ function markovianclosure(
     gradefactor::Int=1,
 )
     @assert length(mc) == length(sites)
-    stypes = ITensors._sitetypes(first(sites))
-    for st in stypes
-        # Check if all sites have this type (otherwise skip this tag).
-        if all(i -> st in ITensors._sitetypes(i), sites)
-            # If the type is shared, then try calling the function with it.
-            ℓ = markovianclosure(st, mc, sitenumber.(sites), chain_edge_site, gradefactor)
-            # If the result is something, return that result.
-            if !isnothing(ℓ)
-                return ℓ
-            end
-        end
+    commontags_s = commontags(sites...)
+    common_stypes = _sitetypes(commontags_s)
+    for st in common_stypes
+        ℓ = markovianclosure(st, mc, sitenumber.(sites), chain_edge_site, gradefactor)
+        # If the result is something, return that result.
+        !isnothing(ℓ) && return ℓ
         # Otherwise, try again with another type from the initial ones.
     end
     # Return an error if no implementation is found for any type.
@@ -187,22 +184,17 @@ function filled_markovianclosure(
     mc::SemicircleMarkovianClosure,
     sites::Vector{<:Index},
     chain_edge_site::Int,
-    gradefactor::Int,
+    gradefactor::Int=1,
 )
     @assert length(mc) == length(sites)
-    stypes = ITensors._sitetypes(first(sites))
-    for st in stypes
-        # Check if all sites have this type (otherwise skip this tag).
-        if all(i -> st in ITensors._sitetypes(i), sites)
-            # If the type is shared, then try calling the function with it.
-            ℓ = filled_markovianclosure(
-                st, mc, sitenumber.(sites), chain_edge_site, gradefactor
-            )
-            # If the result is something, return that result.
-            if !isnothing(ℓ)
-                return ℓ
-            end
-        end
+    commontags_s = commontags(sites...)
+    common_stypes = _sitetypes(commontags_s)
+    for st in common_stypes
+        ℓ = filled_markovianclosure(
+            st, mc, sitenumber.(sites), chain_edge_site, gradefactor
+        )
+        # If the result is something, return that result.
+        !isnothing(ℓ) && return ℓ
         # Otherwise, try again with another type from the initial ones.
     end
     # Return an error if no implementation is found for any type.
@@ -219,7 +211,7 @@ function filled_markovianclosure(
     mc::SemicircleMarkovianClosure,
     sitenumbers::Vector{<:Int},
     chain_edge_site::Int,
-    gradefactor::Int,
+    gradefactor::Int=1,
 )
     ℓ = spin_chain(st, freqs(mc), innercoups(mc), sitenumbers)
 
