@@ -1,7 +1,7 @@
 export markovianclosure_adjoint, markovianclosure′
 export filled_markovianclosure_adjoint, filled_markovianclosure′
 
-using ITensors.SiteTypes: _sitetypes, commontags
+using ITensors.SiteTypes: @SiteType_str, SiteType, _sitetypes, commontags
 
 function markovianclosure_adjoint(
     ::SiteType, ::SemicircleMarkovianClosure, ::Vector{<:Int}, ::Int, ::Int

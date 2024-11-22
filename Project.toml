@@ -1,7 +1,7 @@
 name = "MarkovianClosure"
 uuid = "f4258524-7353-4a9f-9916-8287adc6b2b5"
 authors = ["Davide Ferracin <davide.ferracin@protonmail.com> and contributors"]
-version = "0.1.6"
+version = "0.1.7"
 
 [deps]
 ITensors = "9136182c-28ba-11e9-034c-db9fb085ebd5"

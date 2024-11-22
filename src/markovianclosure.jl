@@ -1,6 +1,6 @@
 export markovianclosure, filled_markovianclosure
 
-using ITensors.SiteTypes: _sitetypes, commontags
+using ITensors.SiteTypes: @SiteType_str, SiteType, _sitetypes, commontags
 
 function markovianclosure(
     ::SiteType, ::SemicircleMarkovianClosure, ::Vector{<:Int}, ::Int, ::Int
